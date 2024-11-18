@@ -1,0 +1,74 @@
+ form {
+
+    background-color: #ececec;
+    padding: 20px;
+    border-radius: 5px;
+    text-align:center;
+}
+input[type="number"] {
+    width: 50%;
+    padding: 5px;
+    margin-bottom: 1%;
+    border-radius: 50px;
+}
+
+input[type="button"] {
+    background-color: #3087e3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+.name{
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom:1%;
+    font-size: larger;
+}
+
+.floor{
+    border:2% solid black;
+    padding: 2%;
+    background-color: bisque;
+    border:20px;
+    margin: 2%;
+    border-radius: 40px;
+    align-items: center;
+    /* display: inline-block; */
+}
+
+.lift-button{
+    border-radius: 10px;
+    background-color: aquamarine;
+    padding: 0.5%;
+    margin-left: 2%;
+}
+
+.lift-card{
+        display: inline-block;
+        padding: 0 25px;
+        height: 50px;
+        font-size: 16px;
+        line-height: 50px;
+        border-radius: 25px;
+        background-color: #f1f1f1;      
+}
+
+.floor-number{
+    text-align:right;
+    color:black;
+    font-weight: 600;
+}
+
+.lift-card{
+    display: inline-block;
+    margin: 0 0.5%;
+}
+
+.lift-cards-list{
+    display: inline-block;
+    
+}
+

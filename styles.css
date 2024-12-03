@@ -1,5 +1,4 @@
  form {
-
     background-color: #ececec;
     padding: 20px;
     border-radius: 5px;
@@ -32,7 +31,6 @@ input[type="button"] {
     border-radius: 0.5%;
     flex-direction: row;
     min-height: 4rem;
-    flex-wrap: wrap;
     width: 90%;
 }
 
@@ -63,23 +61,23 @@ input[type="button"] {
 }
  
 body {
-    margin: 0; /* Remove default margin */
+    margin: 0; 
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column; 
 }
 
 .name {
     display: flex;
-    top: 0;
     width: 100%; /* Full width */
     background-color: lightblue; /* Optional: Styling */
     font-size: larger;
     justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .form-div {
     display: flex;
-    width: 100%;
     background-color: rgb(212, 216, 212); /* Optional: Styling */
     justify-content: center;
 }
@@ -105,20 +103,17 @@ body {
     width: 50%;
     height: 100%;
     background-color: #666;
-    transition: transform 2.5s ease;
+    transition: transform 2.5s ease-in-out;
   }
-
-.left-door {
-    height: 100%;
-    width: 50%;
-    background-color: #444;
-    transition: transform 2.5s ease;
+  
+  .left-door {
+    position: relative;
+    left: 0;
+    transform: translateX(0);
   }
   
   .right-door {
-    height: 100%;
-    width: 50%;
-  background-color: #444;
-  transition: transform 2.5s ease;
+    position: relative;
+    right: 0;
+    transform: translateX(0);
   }
-  

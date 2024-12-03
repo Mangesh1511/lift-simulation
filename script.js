@@ -105,16 +105,19 @@ const floorDivElement = (floorNumber, building) => {
 const upButton = (e) => {
     // console.log("UpButton event: ", e.target.id.split('-')[1]);
     const destFloorNo = e.target.id.split('-')[1];
-    let minDist = floors+1, srcFloorNo, liftNo;
+    let minDist = floors+1, srcFloorNo, liftNo, currFloorLiftCnt=0;
     for(let lift = 0; lift<lifts;lift++){
-        if(liftStateEngine[lift].floorNo == destFloorNo)return;
+        if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
+    }
+
+    if(currFloorLiftCnt>=2){
+        return;
     }
     for(let lift =0 ;lift<lifts;lift++){
         // console.log("checking lift is available or not : liftno: ",lift+1);
-        if((liftStateEngine[lift].isAvailable === true) && (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
+        if((liftStateEngine[lift].isAvailable === true) && Math.abs(destFloorNo-liftStateEngine[lift].floorNo)!==0  && (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
             // console.log(" lift is available   : liftno: ",lift+1, liftStateEngine[lift].isAvailable);
             // console.log("distance is: ",Math.abs(destFloorNo-liftStateEngine[lift].floorNo))
-
             srcFloorNo = liftStateEngine[lift].floorNo;
             minDist = Math.abs(destFloorNo-liftStateEngine[lift].floorNo);
             liftNo = lift+1;
@@ -122,23 +125,32 @@ const upButton = (e) => {
         
     }
     // console.log("srcFloor is: ",srcFloorNo , "dest floor is: ", destFloorNo, "lift no is",liftNo);
-    if(destFloorNo!= srcFloorNo){
-        moveLift(srcFloorNo, destFloorNo, liftNo);
-    }
+    if(destFloorNo == undefined || srcFloorNo==undefined){
+        return;
+     }
+     else if(destFloorNo!== srcFloorNo){
+        //  console.log("moving lift from floor: "+srcFloorNo+"to dest floor no : "+destFloorNo);
+         moveLift(srcFloorNo, destFloorNo, liftNo);
+     }
 
 }
 
 const downButton = (e) => {
     // console.log("downButton event: ", e.target.id.split('-')[1]);
     const destFloorNo =parseInt( e.target.id.split('-')[1]);
-    let minDist = floors+1, srcFloorNo, liftNo;
+    let minDist = floors+1, srcFloorNo, liftNo,currFloorLiftCnt=0;
     for(let lift = 0; lift<lifts;lift++){
-        if(liftStateEngine[lift].floorNo == destFloorNo)return;
+        if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
+    }
+
+    if(currFloorLiftCnt>=2){
+        // console.log("alerady two lifts on this floor: ",destFloorNo);
+        return;
     }
     for(let lift =0 ;lift<lifts;lift++){
         // console.log("checking lift is available or not : liftno: ",lift+1);
-        console.log(liftStateEngine[lift]);
-        if((liftStateEngine[lift].isAvailable === true) && (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
+        // console.log(liftStateEngine[lift]);
+        if((liftStateEngine[lift].isAvailable === true) &&(Math.abs(destFloorNo-liftStateEngine[lift].floorNo)!==0) &&  (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
             // console.log(" lift is available   : liftno: ",lift+1);
             // console.log("distance is: ",Math.abs(destFloorNo-liftStateEngine[lift].floorNo))
 
@@ -149,8 +161,8 @@ const downButton = (e) => {
         }
         
     }
-    if(destFloorNo.isNaN){
-        // console.log("No lifts available");
+    if(destFloorNo?.isNaN ||  srcFloorNo?.isNaN){
+       return;
     }
     else if(destFloorNo!= srcFloorNo){
         // console.log("moving lift from floor: "+srcFloorNo+"to dest floor no : "+destFloorNo);
@@ -171,19 +183,16 @@ const moveLift = (srcFloorNo, destFloorNo, liftNo) => {
     liftStateEngine[liftNo - 1].isAvailable = false;
     // console.log("lift is not available");
     // console.log("updating lift state to : ",liftStateEngine[liftNo-1].isAvailable);
-   
     setTimeout(()=>{
         openDoors(liftNo);
         setTimeout(()=>{
-           closeDoors(liftNo);
-           setTimeout(()=>{
-            liftStateEngine[liftNo-1].isAvailable=true;
-           },2500);
+            closeDoors(liftNo);
         },2500);
+    }, ((Math.abs(floordifference))*2000));
 
-
-    },(floordifference*2)*1000);
-    // console.log("updating lift state to : ",liftStateEngine[liftNo-1].isAvailable);
+   setTimeout(()=>{
+    liftStateEngine[liftNo-1].isAvailable = true;
+   },Math.abs(floordifference)*2000+5000);
 }
 
 const openDoors = (liftNo) => {
@@ -191,17 +200,17 @@ const openDoors = (liftNo) => {
     const leftDoor = document.getElementById(`left-door-${liftNo}`);
     const rightDoor = document.getElementById(`right-door-${liftNo}`);
     leftDoor.style.transform = 'translateX(-100%)';
-    rightDoor.style.transform = 'translateX(100%)';
-    leftDoor.style.transitionDuration = '2.5s';
-    rightDoor.style.transitionDuration = '2.5s';
+    rightDoor.style.transform = 'translateX(100%)'; 
+
   }
   
 const  closeDoors = (liftNo) => {
+    // console.log("closing doors");
     const leftDoor = document.getElementById(`left-door-${liftNo}`);
     const rightDoor = document.getElementById(`right-door-${liftNo}`);
     leftDoor.style.transform = 'translateX(0)';
     rightDoor.style.transform = 'translateX(0)';
-    leftDoor.style.transitionDuration = '2.5s';
-    rightDoor.style.transitionDuration = '2.5s';
+
+  
   }
   

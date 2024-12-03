@@ -7,27 +7,28 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div class="name">
-            <bold>Lift Simulation</bold>
+        <div="container">
+            <div class="name" id = "name">
+                <bold>Lift Simulation</bold>
+            </div>
+                <form id="input-form" class = "form-div" onSubmit="submitUserInput(event)" >
+                    <div class="floor-input-container">
+                        <label for="floors">Floors</label>
+                        <input type="number" id="floors" min="2" required>
+                    </div>
+                    <div class="lifts-input-container">
+                        <label for="lifts" aria-required="true">Lifts</label>
+                        <input type="number" id="lifts" min="1" required>
+                    </div> 
+                    <button type="submit"  id="submit-btn">Submit</button>
+                    <button type="reset" onClick="resetUserInput()" id="reset-btn" >Reset</button>
+                </form>   
+                     
+    <div class = "building" id = "building">
+    </div>
+
         </div>
         
-            <form id="input-form" onSubmit="submitUserInput(event)" >
-                <div class="floor-input-container">
-                    <label for="floors">Floors</label>
-                    <input type="number" id="floors" min="2" required>
-                </div>
-                <div class="lifts-input-container">
-                    <label for="lifts" aria-required="true">Lifts</label>
-                    <input type="number" id="lifts" min="1" required>
-                </div> 
-                <button type="submit"  id="submit-btn">Submit</button>
-                <button  onClick="resetUserInput(event)" id="reset-btn" >Reset</button>
-            </form>    
-<div id = "building">
-    <!-- <div class="floor"><button class="lift-button" type="submit">Up</button><button class="lift-button" type="submit">Down</button> -->
-        <!-- <div class="lift-card">       </div> -->
-        <!-- <div class="floor-number">10</div></div> -->
-</div>
         <script src="script.js"></script>
     </body>
 </html>

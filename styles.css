@@ -4,12 +4,13 @@
     padding: 20px;
     border-radius: 5px;
     text-align:center;
+    height:auto;
 }
 input[type="number"] {
     width: 50%;
     padding: 5px;
     margin-bottom: 1%;
-    border-radius: 50px;
+    border-radius: 1rem;
 }
 
 input[type="button"] {
@@ -18,57 +19,106 @@ input[type="button"] {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 1rem;
 
 }
-.name{
-    text-align: center;
-    margin-top: 2%;
-    margin-bottom:1%;
-    font-size: larger;
-}
+
 
 .floor{
-    border:2% solid black;
-    padding: 2%;
-    background-color: bisque;
-    border:20px;
-    margin: 2%;
-    border-radius: 40px;
+    display: flex;
     align-items: center;
-    /* display: inline-block; */
+    border: 3px solid rgb(208, 190, 190);
+    background-color: aquamarine;
+    border-radius: 0.5%;
+    flex-direction: row;
+    min-height: 4rem;
+    flex-wrap: wrap;
+    width: 90%;
+}
+
+.g-lifts{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    flex-wrap: wrap;
 }
 
 .lift-button{
-    border-radius: 10px;
+    border-radius: 2%;
     background-color: aquamarine;
-    padding: 0.5%;
-    margin-left: 2%;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .lift-card{
-        display: inline-block;
-        padding: 0 25px;
-        height: 50px;
-        font-size: 16px;
-        line-height: 50px;
-        border-radius: 25px;
-        background-color: #f1f1f1;      
+    height: 4rem;
+    width: 3rem;
+    margin-bottom:1rem;
+    background-color: var(--color-gray-400);
+    border: 2px solid black;
+    margin-right: 5px;
+    transition-property: transform;
+    transition-timing-function: ease-in;
+}
+ 
+body {
+    margin: 0; /* Remove default margin */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
 }
 
-.floor-number{
-    text-align:right;
-    color:black;
-    font-weight: 600;
+.name {
+    display: flex;
+    top: 0;
+    width: 100%; /* Full width */
+    background-color: lightblue; /* Optional: Styling */
+    font-size: larger;
+    justify-content: center;
 }
 
-.lift-card{
-    display: inline-block;
-    margin: 0 0.5%;
+.form-div {
+    display: flex;
+    width: 100%;
+    background-color: rgb(212, 216, 212); /* Optional: Styling */
+    justify-content: center;
 }
 
-.lift-cards-list{
-    display: inline-block;
-    
+.building {
+    position: absolute;
+    width: 100%;
+    border: 2px solid #333;
+    background-color: rgb(250, 195, 195);
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    align-items: center;
 }
 
+.doors {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.door {
+    width: 50%;
+    height: 100%;
+    background-color: #666;
+    transition: transform 2.5s ease;
+  }
+
+.left-door {
+    height: 100%;
+    width: 50%;
+    background-color: #444;
+    transition: transform 2.5s ease;
+  }
+  
+  .right-door {
+    height: 100%;
+    width: 50%;
+  background-color: #444;
+  transition: transform 2.5s ease;
+  }
+  

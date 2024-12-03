@@ -1,91 +1,207 @@
 
 
 const form = document.getElementById("input-form");
-const submitBtn = document.getElementById("submit-btn");
-let floors , lifts;
+let submitBtn = document.getElementById("submit-btn");
+let liftStateEngine;
+let lifts,floors;
+const resetUserInput = () => {
 
-const resetUserInput = (e) =>{
-    floors = parseInt(document.getElementById("floors").value);
-    lifts = parseInt(document.getElementById("lifts").value);
-    floorValue =document.getElementById("floors");
-    liftValue = document.getElementById("lifts");
-    floorValue.value=0;
-    liftValue.value=0;
-    // lifts=0;
-    console.log("floors: ",floors," lifts: ",lifts);
-    submitBtn.setAttribute("disabled",false);
-
+    const inputForm = document.getElementById("input-form");
+    inputForm.reset();
+    let building = document.getElementById("building");
+    building.innerHTML="";
+    lifts=0, floors=0, liftStateEngine={};
+    submitBtn = document.getElementById("submit-btn");
+    submitBtn.removeAttribute("disabled");
+    
 }
 
-const submitUserInput= (e)=>{
+const submitUserInput = (e) => {
     e.preventDefault();
     floors = parseInt(document.getElementById("floors").value);
     lifts = parseInt(document.getElementById("lifts").value);
-    console.log("submitUser input" ,floors,lifts);
-    if(isNaN(floors) || isNaN(lifts)){
-        resetUserInput(e);
+    if (isNaN(floors) || isNaN(lifts)) {
+        resetUserInput();
         alert('Enter valid input, please!!');
-        
     }
-    else{
-        console.log("in the else code");
-        submitBtn.setAttribute('disabled',true);
+    else {
+        submitBtn.setAttribute('disabled', true);
+        liftStateEngine = Array(lifts)
+        .fill({ isAvailable: true }) 
+        .map((_) => ({
+          floorNo: 1,
+          isAvailable: true,
+        }));
+        // console.log("lift objects are as follows : ",liftStateEngine);
+        createFloors(floors, lifts);
+    }
 
-        console.log("floors: ",floors," lifts: ",lifts);
-        let floorArray = new Array(lifts).fill(0);
-        floorArray[0]=lifts;
-        console.log("floor lifts array: ",floorArray);
-        createFloors(floors, lifts,floorArray);
-    }
-    
 
 }
 
-const createFloors = (floors, lifts, floorArray) =>{
+const createFloors = (floors) => {
     const building = document.getElementById("building");
-    console.log("floor lifts array: ",floorArray);
-    for(let floor =floors;floor>=0;floor--){   
-        console.log("floorNumber: ",floor," no of lifts: ",floorArray[floor]); 
-       floorDivElement(floors,floor,building, floorArray[floor]);
+    // console.log("floor lifts array: ", liftStateEngine);
+    for (let floor = 0; floor < floors; floor++) {
+        floorDivElement(floor + 1, building);
     }
 }
 
-const floorDivElement = (floors,floorNumber,building,lifts) =>{
-//     <div class ="floor">
-//     <button type="submit" class="lift-button" onCick="upButton">Up</button>
-//     <button type ="submit"class="lift-button" onClick = "downButton">Down</button>
-//     <div class="floor-number">1</div>
-// </div>
+const floorDivElement = (floorNumber, building) => {
+
     const floorDiv = document.createElement('div');
-    floorDiv.setAttribute("class", "floor"); 
-   
+    floorDiv.setAttribute("class", "floor");
+    floorDiv.setAttribute("id", "floor-" + floorNumber);
+
     const upButton = document.createElement("button");
-    upButton.setAttribute("class","lift-button");
-    upButton.type="submit";
-    upButton.textContent="Up";
+    upButton.setAttribute("class", "lift-button");
+    upButton.setAttribute("id", "upButton-" + (floorNumber));
+    upButton.textContent = "Up";
+    upButton.setAttribute("onClick", "upButton(event)");
+
 
     const downButton = document.createElement("button");
-    downButton.setAttribute("class","lift-button");
-    downButton.type="submit";
-    downButton.textContent="Down";
+    downButton.setAttribute("class", "lift-button");
+    downButton.setAttribute("id", "downButton-" + (floorNumber));
+    downButton.textContent = "Down";
+    downButton.setAttribute("onClick", "downButton(event)");
 
-    const floorNumberDiv = document.createElement("div");
-    floorNumberDiv.setAttribute("class","floor-number");
-    floorNumberDiv.textContent=(floorNumber+1);
-    floorDiv.append(upButton, downButton);
-    const liftCardsList = document.createElement("div");
-    liftCardsList.className="lifts-cards-list";
-    for(let noOfLifts =0;noOfLifts<lifts;noOfLifts++){
-        const liftDiv = document.createElement("div");
-        liftDiv.className="lift-card";
-        liftDiv.textContent="        ";
-        liftCardsList.append(liftDiv);
+    if (floorNumber == 1) {
+        const groundFloorsLifts = document.createElement('div');
+        groundFloorsLifts.className = "g-lifts";
+
+        // console.log("adding lifts to the ground floor");
+        for (let noOfLifts = 0; noOfLifts < lifts; noOfLifts++) {
+            const liftDiv = document.createElement("div");
+            liftDiv.className = "lift-card";
+            liftDiv.setAttribute("id", "lift-card-" + (noOfLifts + 1));
+            liftDiv.textContent = "        ";
+            const liftDoors = document.createElement("div");
+        
+            liftDoors.className = "doors";
+    
+            const rightDoor = document.createElement("div");
+            rightDoor.className=`door right-door`;
+            rightDoor.id=`right-door-${noOfLifts+1}`;
+
+            const leftDoor = document.createElement("div");
+            leftDoor.className = `door left-door`;
+            leftDoor.id = `left-door-${noOfLifts+1}`;
+    
+            liftDoors.append(leftDoor,rightDoor);
+            liftDiv.append(liftDoors);
+            groundFloorsLifts.append(liftDiv);
+        }
+        // console.log("appending ground floor lifts: ", groundFloorsLifts);
+        floorDiv.append(upButton, downButton, groundFloorsLifts);
     }
-    floorDiv.append(liftCardsList);
-    // console.log(floorDiv);
+
+    if (floorNumber !== 1) {
+        floorDiv.append(upButton, downButton);
+    }
     building.append(floorDiv);
 }
 
-const addLiftCards=(floorNumberD)=>{
+const upButton = (e) => {
+    // console.log("UpButton event: ", e.target.id.split('-')[1]);
+    const destFloorNo = e.target.id.split('-')[1];
+    let minDist = floors+1, srcFloorNo, liftNo;
+    for(let lift = 0; lift<lifts;lift++){
+        if(liftStateEngine[lift].floorNo == destFloorNo)return;
+    }
+    for(let lift =0 ;lift<lifts;lift++){
+        // console.log("checking lift is available or not : liftno: ",lift+1);
+        if((liftStateEngine[lift].isAvailable === true) && (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
+            // console.log(" lift is available   : liftno: ",lift+1, liftStateEngine[lift].isAvailable);
+            // console.log("distance is: ",Math.abs(destFloorNo-liftStateEngine[lift].floorNo))
+
+            srcFloorNo = liftStateEngine[lift].floorNo;
+            minDist = Math.abs(destFloorNo-liftStateEngine[lift].floorNo);
+            liftNo = lift+1;
+        }
+        
+    }
+    // console.log("srcFloor is: ",srcFloorNo , "dest floor is: ", destFloorNo, "lift no is",liftNo);
+    if(destFloorNo!= srcFloorNo){
+        moveLift(srcFloorNo, destFloorNo, liftNo);
+    }
 
 }
+
+const downButton = (e) => {
+    // console.log("downButton event: ", e.target.id.split('-')[1]);
+    const destFloorNo =parseInt( e.target.id.split('-')[1]);
+    let minDist = floors+1, srcFloorNo, liftNo;
+    for(let lift = 0; lift<lifts;lift++){
+        if(liftStateEngine[lift].floorNo == destFloorNo)return;
+    }
+    for(let lift =0 ;lift<lifts;lift++){
+        // console.log("checking lift is available or not : liftno: ",lift+1);
+        console.log(liftStateEngine[lift]);
+        if((liftStateEngine[lift].isAvailable === true) && (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
+            // console.log(" lift is available   : liftno: ",lift+1);
+            // console.log("distance is: ",Math.abs(destFloorNo-liftStateEngine[lift].floorNo))
+
+            srcFloorNo = liftStateEngine[lift].floorNo;
+            minDist = Math.abs(destFloorNo-liftStateEngine[lift].floorNo);
+            // console.log("updating minDist is: ",minDist);
+            liftNo = lift+1;
+        }
+        
+    }
+    if(destFloorNo.isNaN){
+        // console.log("No lifts available");
+    }
+    else if(destFloorNo!= srcFloorNo){
+        // console.log("moving lift from floor: "+srcFloorNo+"to dest floor no : "+destFloorNo);
+        moveLift(srcFloorNo, destFloorNo, liftNo);
+    }
+}
+
+const moveLift = (srcFloorNo, destFloorNo, liftNo) => {
+
+    const floordifference = destFloorNo - srcFloorNo;
+    // console.log("lift-card-"+liftNo);
+    const lift  = document.getElementById("lift-card-"+liftNo);
+
+    lift.style.transform = `translateY(${-70*(destFloorNo-1)}px)`;
+    lift.style.transitionDuration = `${floordifference*2}s`;
+    //updating the lifts-position
+    liftStateEngine[liftNo-1].floorNo = destFloorNo;
+    liftStateEngine[liftNo - 1].isAvailable = false;
+    // console.log("lift is not available");
+    // console.log("updating lift state to : ",liftStateEngine[liftNo-1].isAvailable);
+   
+    setTimeout(()=>{
+        openDoors(liftNo);
+        setTimeout(()=>{
+           closeDoors(liftNo);
+           setTimeout(()=>{
+            liftStateEngine[liftNo-1].isAvailable=true;
+           },2500);
+        },2500);
+
+
+    },(floordifference*2)*1000);
+    // console.log("updating lift state to : ",liftStateEngine[liftNo-1].isAvailable);
+}
+
+const openDoors = (liftNo) => {
+    // console.log("open doors");
+    const leftDoor = document.getElementById(`left-door-${liftNo}`);
+    const rightDoor = document.getElementById(`right-door-${liftNo}`);
+    leftDoor.style.transform = 'translateX(-100%)';
+    rightDoor.style.transform = 'translateX(100%)';
+    leftDoor.style.transitionDuration = '2.5s';
+    rightDoor.style.transitionDuration = '2.5s';
+  }
+  
+const  closeDoors = (liftNo) => {
+    const leftDoor = document.getElementById(`left-door-${liftNo}`);
+    const rightDoor = document.getElementById(`right-door-${liftNo}`);
+    leftDoor.style.transform = 'translateX(0)';
+    rightDoor.style.transform = 'translateX(0)';
+    leftDoor.style.transitionDuration = '2.5s';
+    rightDoor.style.transitionDuration = '2.5s';
+  }
+  

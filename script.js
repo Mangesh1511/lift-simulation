@@ -177,7 +177,7 @@ const moveLift = (srcFloorNo, destFloorNo, liftNo) => {
     const lift  = document.getElementById("lift-card-"+liftNo);
 
     lift.style.transform = `translateY(${-70*(destFloorNo-1)}px)`;
-    lift.style.transitionDuration = `${floordifference*2}s`;
+    lift.style.transitionDuration = `${Math.abs(floordifference)*2}s`;
     //updating the lifts-position
     liftStateEngine[liftNo-1].floorNo = destFloorNo;
     liftStateEngine[liftNo - 1].isAvailable = false;

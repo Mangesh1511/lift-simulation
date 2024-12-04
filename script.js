@@ -110,7 +110,8 @@ const upButton = (e) => {
         if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
     }
 
-    if(currFloorLiftCnt>=2){
+    if(currFloorLiftCnt>=1){
+        // console.log("alerady  lift on this floor: ",destFloorNo);
         return;
     }
     for(let lift =0 ;lift<lifts;lift++){
@@ -142,9 +143,8 @@ const downButton = (e) => {
     for(let lift = 0; lift<lifts;lift++){
         if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
     }
-
-    if(currFloorLiftCnt>=2){
-        // console.log("alerady two lifts on this floor: ",destFloorNo);
+    if(currFloorLiftCnt>=1){
+        // console.log("alerady  lift on this floor: ",destFloorNo);
         return;
     }
     for(let lift =0 ;lift<lifts;lift++){

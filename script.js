@@ -29,8 +29,9 @@ const submitUserInput = (e) => {
         liftStateEngine = Array(lifts)
         .fill({ isAvailable: true }) 
         .map((_) => ({
-          floorNo: 1,
+          floorNo: 0,
           isAvailable: true,
+          directionUpwards: true
         }));
         // console.log("lift objects are as follows : ",liftStateEngine);
         createFloors(floors, lifts);
@@ -42,8 +43,8 @@ const submitUserInput = (e) => {
 const createFloors = (floors) => {
     const building = document.getElementById("building");
     // console.log("floor lifts array: ", liftStateEngine);
-    for (let floor = 0; floor < floors; floor++) {
-        floorDivElement(floor + 1, building);
+    for (let floor = 0; floor <= floors; floor++) {
+        floorDivElement(floor , building);
     }
 }
 
@@ -66,7 +67,7 @@ const floorDivElement = (floorNumber, building) => {
     downButton.textContent = "Down";
     downButton.setAttribute("onClick", "downButton(event)");
 
-    if (floorNumber == 1) {
+    if (floorNumber == 0) {
         const groundFloorsLifts = document.createElement('div');
         groundFloorsLifts.className = "g-lifts";
 
@@ -93,26 +94,45 @@ const floorDivElement = (floorNumber, building) => {
             groundFloorsLifts.append(liftDiv);
         }
         // console.log("appending ground floor lifts: ", groundFloorsLifts);
-        floorDiv.append(upButton, downButton, groundFloorsLifts);
+        downButton.style.visibility="hidden";
+        // downButton.setAttribute("visibility","hidden");
+        floorDiv.append(upButton,downButton, groundFloorsLifts);
     }
 
-    if (floorNumber !== 1) {
-        floorDiv.append(upButton, downButton);
+    if (floorNumber !== 0) {
+        if(floorNumber!==floors){
+            floorDiv.append(upButton, downButton);
+        }else{
+            upButton.style.visibility="hidden";
+            floorDiv.append(upButton,downButton);
+        }
+       
     }
+   
     building.append(floorDiv);
 }
 
 const upButton = (e) => {
-    // console.log("UpButton event: ", e.target.id.split('-')[1]);
+    console.log("UpButton event: ", e.target.id.split('-')[1]);
     const destFloorNo = e.target.id.split('-')[1];
     let minDist = floors+1, srcFloorNo, liftNo, currFloorLiftCnt=0;
     for(let lift = 0; lift<lifts;lift++){
         if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
     }
-
+    console.log("no of lifts on dest floor:  ",currFloorLiftCnt);
     if(currFloorLiftCnt>=1){
-        // console.log("alerady  lift on this floor: ",destFloorNo);
-        return;
+        for(let lift = 0; lift<lifts;lift++){
+            if(liftStateEngine[lift].floorNo == destFloorNo && liftStateEngine[lift].directionUpwards == true){
+                if(liftStateEngine[lift].isAvailable==true){
+                    // console.log("lift : "+lift+" is available.");
+                    openDoors(lift+1);
+                        setTimeout(()=>{
+                            closeDoors(lift+1);
+                        },2500);
+                }
+                return;
+            }
+        }
     }
     for(let lift =0 ;lift<lifts;lift++){
         // console.log("checking lift is available or not : liftno: ",lift+1);
@@ -131,7 +151,7 @@ const upButton = (e) => {
      }
      else if(destFloorNo!== srcFloorNo){
         //  console.log("moving lift from floor: "+srcFloorNo+"to dest floor no : "+destFloorNo);
-         moveLift(srcFloorNo, destFloorNo, liftNo);
+         moveLift(srcFloorNo, destFloorNo, liftNo, true);
      }
 
 }
@@ -143,12 +163,27 @@ const downButton = (e) => {
     for(let lift = 0; lift<lifts;lift++){
         if(liftStateEngine[lift].floorNo == destFloorNo)currFloorLiftCnt++;
     }
+    // console.log("lift count at the floor is: ",currFloorLiftCnt);
     if(currFloorLiftCnt>=1){
-        // console.log("alerady  lift on this floor: ",destFloorNo);
-        return;
+        for(let lift = 0; lift<lifts;lift++){
+            // console.log("checking the lift no: ",lift);
+            // console.log(liftStateEngine[lift]);
+            // console.log(liftStateEngine[lift].floorNo," ",destFloorNo," state: ",liftStateEngine[lift].directionUpwards);
+            if((liftStateEngine[lift].floorNo === destFloorNo) && (liftStateEngine[lift].directionUpwards === false)){
+                // console.log("lift: "+lift + "is already going in downward direction");
+                if(liftStateEngine[lift].isAvailable==true){
+                    // console.log("lift : "+lift+" is available.");
+                    openDoors(lift+1);
+                        setTimeout(()=>{
+                            closeDoors(lift+1);
+                        },2500);
+                }
+                return;
+            }
+        }
     }
     for(let lift =0 ;lift<lifts;lift++){
-        // console.log("checking lift is available or not : liftno: ",lift+1);
+        console.log("checking lift is available or not : liftno: ",lift+1);
         // console.log(liftStateEngine[lift]);
         if((liftStateEngine[lift].isAvailable === true) &&(Math.abs(destFloorNo-liftStateEngine[lift].floorNo)!==0) &&  (minDist>Math.abs(destFloorNo-liftStateEngine[lift].floorNo))){
             // console.log(" lift is available   : liftno: ",lift+1);
@@ -166,21 +201,22 @@ const downButton = (e) => {
     }
     else if(destFloorNo!= srcFloorNo){
         // console.log("moving lift from floor: "+srcFloorNo+"to dest floor no : "+destFloorNo);
-        moveLift(srcFloorNo, destFloorNo, liftNo);
+        moveLift(srcFloorNo, destFloorNo, liftNo, false);
     }
 }
 
-const moveLift = (srcFloorNo, destFloorNo, liftNo) => {
+const moveLift = (srcFloorNo, destFloorNo, liftNo, isDirectionUpwards) => {
 
     const floordifference = destFloorNo - srcFloorNo;
     // console.log("lift-card-"+liftNo);
     const lift  = document.getElementById("lift-card-"+liftNo);
 
-    lift.style.transform = `translateY(${-70*(destFloorNo-1)}px)`;
+    lift.style.transform = `translateY(${-70*(destFloorNo)}px)`;
     lift.style.transitionDuration = `${Math.abs(floordifference)*2}s`;
     //updating the lifts-position
     liftStateEngine[liftNo-1].floorNo = destFloorNo;
     liftStateEngine[liftNo - 1].isAvailable = false;
+    liftStateEngine[liftNo-1].directionUpwards = isDirectionUpwards;
     // console.log("lift is not available");
     // console.log("updating lift state to : ",liftStateEngine[liftNo-1].isAvailable);
     setTimeout(()=>{
@@ -210,7 +246,6 @@ const  closeDoors = (liftNo) => {
     const rightDoor = document.getElementById(`right-door-${liftNo}`);
     leftDoor.style.transform = 'translateX(0)';
     rightDoor.style.transform = 'translateX(0)';
-
   
   }
   

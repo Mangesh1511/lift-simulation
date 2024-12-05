@@ -52,7 +52,7 @@ input[type="button"] {
 .lift-card{
     height: 4rem;
     width: 3rem;
-    margin-bottom:1rem;
+    /* margin-bottom:1rem; */
     background-color: var(--color-gray-400);
     border: 2px solid black;
     margin-right: 5px;

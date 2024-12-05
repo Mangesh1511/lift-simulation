@@ -11,14 +11,14 @@
             <div class="name" id = "name">
                <p> <bold>Lift Simulation</bold></p>
             </div>
-                <form id="input-form" class = "form-div" onSubmit="submitUserInput(event)" >
+                <form id="input-form" class = "form-div" onSubmit="submitUserInput(event)" Plac >
                     <div class="floor-input-container">
                         <label for="floors">Floors</label>
-                        <input type="number" id="floors" min="2" required>
+                        <input type="number" id="floors" min="1" max="100" placeholder="1-100" required>
                     </div>
                     <div class="lifts-input-container">
                         <label for="lifts" aria-required="true">Lifts</label>
-                        <input type="number" id="lifts" min="1" required>
+                        <input type="number" id="lifts" min="1" max="10"  placeholder="1-10"required>
                     </div> 
                     <button type="submit"  id="submit-btn">Submit</button>
                     <button type="reset" onClick="resetUserInput()" id="reset-btn" >Reset</button>

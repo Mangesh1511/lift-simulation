@@ -32,21 +32,35 @@ input[type="button"] {
     flex-direction: row;
     min-height: 4rem;
     width: 90%;
+    flex-wrap: nowrap;
 }
 
 .g-lifts{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    width: 80%;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 75%;
+    flex-wrap: nowrap;
+
 }
 
 .lift-button{
-    border-radius: 2%;
+    /* border-radius: 2%; */
     background-color: aquamarine;
     padding: 0.5rem;
-    margin-left: 0.5rem;
+    /* margin-left: 0.5rem; */
+}
+
+.button-div{
+    display: flex;
+    flex-direction: row;
+    width: 15%;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.floor-number{
+    max-width: 1rem;
 }
 
 .lift-card{
@@ -62,8 +76,9 @@ input[type="button"] {
  
 body {
     margin: 0; 
-    display: flex;
+    display: block;
     flex-direction: column; 
+    min-width: 100vw;
 }
 
 .name {
@@ -83,7 +98,6 @@ body {
 }
 
 .building {
-    position: absolute;
     width: 100%;
     border: 2px solid #333;
     background-color: rgb(250, 195, 195);

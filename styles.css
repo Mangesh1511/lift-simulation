@@ -30,7 +30,7 @@ input[type="button"] {
     background-color: aquamarine;
     border-radius: 0.5%;
     flex-direction: row;
-    min-height: 4rem;
+    height: 4rem;
     width: 90%;
     flex-wrap: nowrap;
 }
@@ -38,32 +38,39 @@ input[type="button"] {
 .g-lifts{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 75%;
+    justify-content: space-around;
+    width: 85%;
     flex-wrap: nowrap;
-
+    flex-shrink:100;
 }
 
 .lift-button{
     /* border-radius: 2%; */
     background-color: aquamarine;
-    padding: 0.5rem;
-    /* margin-left: 0.5rem; */
+    padding: 0.3rem;
+    justify-content: space-around;
+    display: flex;
+    flex-wrap:wrap;
+    width:100%;
+    overflow: hidden;
 }
 
 .button-div{
     display: flex;
-    flex-direction: row;
-    width: 15%;
+    flex-direction: column;
+    width: 10%;
     flex-wrap: nowrap;
     justify-content: space-around;
 }
 
 .floor-number{
-    max-width: 1rem;
+    display: flex;
+    width: 5%;
+    justify-content: space-around;
 }
 
 .lift-card{
+    display: flex;
     height: 4rem;
     width: 3rem;
     /* margin-bottom:1rem; */
@@ -131,3 +138,8 @@ body {
     right: 0;
     transform: translateX(0);
   }
+
+  
+
+
+  

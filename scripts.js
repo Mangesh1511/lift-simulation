@@ -62,7 +62,7 @@ const resetUserInput = () => {
 
 const submitUserInput = (e) => {
   e.preventDefault();
-  console.log("submitted input");
+  // console.log("submitted input");
   floors = parseInt(document.getElementById("floors").value);
   lifts = parseInt(document.getElementById("lifts").value);
   if (isNaN(floors) || isNaN(lifts)) {
@@ -77,7 +77,7 @@ const submitUserInput = (e) => {
         isAvailable: true,
         directionUpwards: true,
       }));
-    console.log("lift objects are as follows : ", liftStateEngine);
+    // console.log("lift objects are as follows : ", liftStateEngine);
     createBuilding(floors, lifts);
   }
 };
@@ -96,7 +96,7 @@ const createFloor = (floorNumber, building) => {
   floorDiv.setAttribute("id", "floor-" + floorNumber);
 
   const floorNumberDiv = createFloorNumberPlate(floorNumber);
-  console.log("created a floorDiv: ", floorNumberDiv);
+  // console.log("created a floorDiv: ", floorNumberDiv);
 
   const buttonDiv = document.createElement("div");
   buttonDiv.className = "button-div";
@@ -137,7 +137,7 @@ const createFloor = (floorNumber, building) => {
   if (floorNumber !== 0) {
     if (floorNumber !== floors) {
       buttonDiv.append(upButton, downButton);
-      console.log(floorNumberDiv);
+      // console.log(floorNumberDiv);
       floorDiv.append(floorNumberDiv, buttonDiv);
     } else {
       buttonDiv.append(downButton);
@@ -153,7 +153,7 @@ const createFloorNumberPlate = (floorNumber) => {
   floorNumberDiv.className = "floor-number";
   floorNumberDiv.textContent = floorNumber;
   // floorNumberDiv.style.border = "1px solid black";
-  console.log("created a floorDiv: ", floorNumberDiv);
+  // console.log("created a floorDiv: ", floorNumberDiv);
   return floorNumberDiv;
 };
 

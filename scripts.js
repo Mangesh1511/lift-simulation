@@ -85,7 +85,7 @@ const submitUserInput = (e) => {
 const createBuilding = (floors) => {
   const building = document.getElementById("building");
   // console.log("floor lifts array: ", liftStateEngine);
-  for (let floor = 0; floor <= floors; floor++) {
+  for (let floor = 0; floor < floors; floor++) {
     createFloor(floor, building);
   }
 };
